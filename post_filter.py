@@ -44,7 +44,30 @@ def save_txt(data, path):
 
 
 def load_jsonl(path):
+    """
+    Read a file in the JSON Lines format.
+
+    Args:
+        path (str): The string path to the file.
+
+    Returns:
+        list: A list of Python dictionaries, where each dictionary represents a JSON object.
+    
+    Example:
+        input: 'data.jsonl'
+            {"name": "John", "age": 25}
+            {"name": "Alice", "age": 30}
+            {"name": "Bob", "age": 35}
+        output:
+            [{'name': 'John', 'age': 25}, {'name': 'Alice', 'age': 30}, {'name': 'Bob', 'age': 35}]
+
+    """
+    # Open file `f` in read mode 'r' to load the content of the file
     with open(path, 'r', encoding='UTF_8') as f:
+        # `f.readlines()` reads all lines from the file
+        # Iterate over each line `line` and filter out empty whitespace stripped lines `len(line.strip()) > 0`
+        # `json.loads(line)` parses each line as a JSON object and create a dictionary, for example {'name': 'John'}
+        # Return a list containing all the dictionaries
         return [json.loads(line) for line in f.readlines() if len(line.strip()) > 0]
 
 
