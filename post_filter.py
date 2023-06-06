@@ -8,6 +8,15 @@ from multiprocessing import Pool
 
 
 def load_txt(path):
+    """
+    Load and read text data from a file.
+
+    Args:
+        path (str): The string path to the file. For example, "./data/"
+        
+    Returns:
+        list: A list of non-empty lines content from the file.
+    """
     with open(path, encoding='UTF-8', errors='ignore') as f:
         data = [i.strip() for i in f.readlines() if len(i.strip()) > 0]
     return data
