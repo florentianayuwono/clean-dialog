@@ -32,10 +32,13 @@ def save_txt(data, path):
     Save data as text by writing its content into a file.
 
     Args:
-        data (str): The text content to be saved.
+        data (str or list): The text content to be saved.
         path (str): The string path to the file.
-        
+
     """
+    # Open file `f` in write mode 'w' to indicate that existing content in the file might be overwritten
+    # `with` to ensure the file is properly opened and closed
+    # `write()` is called on `f` to write the contents of `data` into the file
     with open(path, 'w', encoding='UTF-8') as f:
         f.write(data)
 
