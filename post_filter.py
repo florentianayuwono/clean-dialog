@@ -73,14 +73,19 @@ def load_jsonl(path):
 
 def save_jsonl(data, path):
     """
-    Convert a list of dictionaries of JSON object into JSON string and write to the file as JSONL.
+    Convert a list of dictionaries of JSON object into JSONL format and write into a file.
 
     Args:
         path (str): The string path to the file.
         data (list): A list of dictionaries, where each dictionary represents a JSON object.
     
     """
+    # Open file `f` in write mode 'w' to indicate existing content of file might be overwritten
     with open(path, 'w', encoding='UTF-8') as f:
+        # For each `line` from the `data`, use `json.dumps()` to convert dictionary into JSON string representation
+        # `ensure_ascii=False` to ensure non-ASCII characters are properly encoded
+        # Each JSON string from `line` is added with '\n' as separator with `str.join()`
+        # Creates a string where each JSON object is on a separate line, adhering to JSONL format and write to `f`
         f.write("\n".join(json.dumps(line, ensure_ascii=False) for line in data))
 
 
