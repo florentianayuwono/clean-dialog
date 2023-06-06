@@ -12,17 +12,30 @@ def load_txt(path):
     Load and read text data from a file.
 
     Args:
-        path (str): The string path to the file. For example, "./data/"
-        
+        path (str): The string path to the file. For example, "./data/".
+
     Returns:
-        list: A list of non-empty lines content from the file.
+        list: A list of non-empty, whitespace stripped lines content from the file.
     """
+    # Open file `f` in text mode with 'UTF-8' encoding (handle text data that may contain non-ASCII characters)
+    # and 'ignore' errors parameter to ignore any decoding errors encountered while reading the file
     with open(path, encoding='UTF-8', errors='ignore') as f:
+        # `f.readlines()` returns a list of strings where each string represents a line in the file
+        # Iterates over each line `i` in the file and applies `strip()` to remove any leading or trailing whitespace characters
+        # Filters out empty lines by checking whether the length of stripped line `len(i.strip())` is greater than 0
         data = [i.strip() for i in f.readlines() if len(i.strip()) > 0]
     return data
 
 
 def save_txt(data, path):
+    """
+    Save data as text by writing its content into a file.
+
+    Args:
+        data (str): The text content to be saved.
+        path (str): The string path to the file.
+        
+    """
     with open(path, 'w', encoding='UTF-8') as f:
         f.write(data)
 
