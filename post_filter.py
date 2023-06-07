@@ -124,14 +124,14 @@ def no_at(seq, tail_length=30):
 
 def is_chinese_char(cp):
     """
-    Checks whether a given Unicode code point represents a Chinese character.
+    Check whether a given Unicode code point represents a Chinese character.
 
     Args:
         cp (int): Integer value that represents a specific character in the Unicode standard.
     
     Returns:
         boolean: True if it is a Chinese character.
-        
+
     """
     # This defines a "chinese character" as anything in the CJK Unicode block:
     #   https://en.wikipedia.org/wiki/CJK_Unified_Ideographs_(Unicode_block)
@@ -157,7 +157,18 @@ def is_chinese_char(cp):
 
 
 def contains_Chinese(seq):
+    """
+    Check whether a given string sequence contains Chinese characters.
+
+    Args:
+        seq (str): The input string.
+    
+    Returns:
+        boolean: True if it contains Chinese characters.
+
+    """
     for char in seq:
+        # `ord` to convert character `char` to a Unicode code point `cp`
         cp = ord(char)
         if is_chinese_char(cp):
             return True
