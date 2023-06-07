@@ -176,10 +176,27 @@ def contains_Chinese(seq):
 
 
 def contain_at(seq, tail_length=30):
+    """
+    Check whether a given string sequence contains '@' symbol.
+
+    Args:
+        seq (str): The input string.
+
+    Returns:
+        boolean: True if it contains '@'.
+    """
+    # Create a regular expression pattern using `re.compile` that matches one or more '@' characters
+    # followed by up to 30 non-whitespace characters and a space
+    # `r""` is raw string notation to preserve the literal characters without interpreting escape sequences
+    # `(@+)` is capturing group `(...)` that matches one or more `+` consecutive '@' characters 
+    # `\S{,30}` matches any non-whitespace character `\S` between 0 and 30 occurences `{,30}`
     flag = re.search(r"(@+)\S{,30} ", seq)
+    # True if there is sequence matching the pattern
     if flag is not None:
         return True
+    # Use `rfind` to find the index of last occurence of '@'
     r_at_idx = seq.rfind("@")
+    # True if there exist '@' and the length of string after '@' is less than `tail_length`
     if r_at_idx > -1 and len(seq[r_at_idx:]) < tail_length:
         return True
     return False
