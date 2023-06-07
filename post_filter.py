@@ -53,7 +53,7 @@ def load_jsonl(path):
     Returns:
         list: A list of Python dictionaries, where each dictionary represents a JSON object.
     
-    Example:
+    Examples:
         input: 'data.jsonl'
             {"name": "John", "age": 25}
             {"name": "Alice", "age": 30}
@@ -90,10 +90,34 @@ def save_jsonl(data, path):
 
 
 def no_at(seq, tail_length=30):
+    """
+    Remove '@' from input string and remove the remaining string that has a length <= `tail_length`.
+
+    Args:
+        seq (str): The input string.
+        tail_length (int): the minimum limit of remaining length. If unspecified, the default is set to 30.
+    
+    Returns:
+        A string with '@' removed.
+    
+    Examples:
+        input: "@john have you reported to @anna ?"
+        output: "have you reported to"
+
+    """
+    # Create a regular expression pattern using `re.compile` that matches one or more '@' characters
+    # followed by up to 30 non-whitespace characters and a space
+    # `r""` is raw string notation to preserve the literal characters without interpreting escape sequences
+    # `(@+)` is capturing group `(...)` that matches one or more `+` consecutive '@' characters 
+    # `\S{,30}` matches any non-whitespace character `\S` between 0 and 30 occurences `{,30}`
     temp_pat = re.compile(r"(@+)\S{,30} ")
+    # Use `sub` to substitute all matches found in the input string `seq` with an empty string (remove)
     seq = temp_pat.sub("", seq)
+    # Find the last occurence of '@' in the modified string `seq` using `rfind` and return index position (-1 if not found)
     r_at_idx = seq.rfind("@")
+    # Check if the length of remaining substring from the last '@' is shorter than `tail_length`
     if len(seq[r_at_idx:]) < tail_length:
+        # Preserve only the string `seq` up to the index position and remove the tail
         seq = seq[:r_at_idx]
     return seq
 
