@@ -202,10 +202,28 @@ def contain_at(seq, tail_length=30):
     return False
 
 
+# This pattern is used to find occurences of letters "tm" surrounded by non-alphabetic characters, when it is not part of a larger word.
+# `([^a-zA-Z])` matches any non-alphabetic character (uppercase or lowercase)
+# `(tm)` matches the letters "tm" literally
+# `re.I` is flag indicating case-insensitive matching
 TM_REGEX = re.compile(r"([^a-zA-Z])(tm)([^a-zA-Z])", re.I)
+
+# This pattern is used to find occurences of text enclosed in square brackets, such as "[example text]".
+# `\[` and `\]` matches the opening and closing square brackets
+# `.*?` matches any character except newline, zero or more times in a non-greedy manner. The `?` makes the match non-greedy, so it stops at the first closing square bracket encountered
+# ` *` matches one or more whitespace character after the closing square bracket
 BRACKETS_REGEX = re.compile(r"\[.*?\] *")
+
+# This pattern is used to find occurences of text enclosed in full-width square brackets, such as " [hello] "
 BRACKETS_REGEX2 = re.compile(r"［.*?］ *")
-# BRACKETS_REGEX3 = re.compile(r"【.*?】 *")
+
+# This pattern is used to find occurences of text enclosed in special square brackets, such as "【hello】"
+BRACKETS_REGEX3 = re.compile(r"【.*?】 *")
+
+# This pattern is used to find occurences of four or more consecutive colons or whitespace characters, such as "::::" and "    "
+# It is useful for identifying indentation
+# `[:\s]` matches either a colon ":" or any whitespace character (space, tab, etc.)
+# `{4,}` matches four or more consecutive occurences of the preceeding pattern
 COLON_REGEX = re.compile(r"[:\s]{4,}")
 
 
