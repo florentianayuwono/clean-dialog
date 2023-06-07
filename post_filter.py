@@ -95,7 +95,7 @@ def no_at(seq, tail_length=30):
 
     Args:
         seq (str): The input string.
-        tail_length (int): the minimum limit of remaining length. If unspecified, the default is set to 30.
+        tail_length (int): The minimum limit of remaining length. If unspecified, the default is set to 30.
     
     Returns:
         A string with '@' removed.
@@ -123,7 +123,16 @@ def no_at(seq, tail_length=30):
 
 
 def is_chinese_char(cp):
-    """Checks whether a given Unicode code point `cp` represents a Chinese character."""
+    """
+    Checks whether a given Unicode code point represents a Chinese character.
+
+    Args:
+        cp (int): Integer value that represents a specific character in the Unicode standard.
+    
+    Returns:
+        boolean: True if it is a Chinese character.
+        
+    """
     # This defines a "chinese character" as anything in the CJK Unicode block:
     #   https://en.wikipedia.org/wiki/CJK_Unified_Ideographs_(Unicode_block)
     #
