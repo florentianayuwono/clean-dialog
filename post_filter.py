@@ -228,20 +228,38 @@ COLON_REGEX = re.compile(r"[:\s]{4,}")
 
 
 def seq_clean(seq, data_type="none"):
+    """
+    Clean input data according to their type.
+
+    Args:
+        seq (str): Input data.
+        data_type (str): Type of input data, default is "none".
+    
+    Returns:
+        str: Processed sequence.
+    """
     if data_type == "zhihu":
+        # Create pattern `pat` to match occurences of ellipsis ("...") followed by optional whitespace and phrase "show all" in Chinese
         pat = re.compile(r"…* *显示全部\s*")
+        # Remove the matched pattern object from the input string `seq`
         seq = pat.sub("", seq)
     elif data_type == "weibo_tang":
+        # Remove the matched pattern object of text enclosed in square brackets along with trailing whitespace
         seq = BRACKETS_REGEX.sub("", seq)
         seq = BRACKETS_REGEX2.sub("", seq)
+    # `seq` is set to empty if it contains '@'
     if contain_at(seq):
         seq = ""
+    # `seq` is set to empty if it contains a vulgar term in Chinese
     if "尼玛" in seq:
         seq = ""
+    # Remove the matched pattern object of colons or whitespace characters
     seq = COLON_REGEX.sub("", seq)
+    # Remove specific substring from `seq`, such as "[image]", " [image] " and exclamation in Chinese
     seq = seq.replace("[图片]", "")
     seq = seq.replace("［图片］", "")
     seq = seq.replace("我擦", "")
+    # Remove trademark symbol "tm" surrounded by non-alphabetic characters. Replace the matches with characters before and after "tm"
     seq = TM_REGEX.sub(lambda m: m.group(1) + m.group(3), seq)
     return seq
 
