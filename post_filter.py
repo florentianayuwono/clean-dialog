@@ -332,6 +332,7 @@ def single_func(path, outpath, extra_func=False, min_length=5, max_length=200):
 
 
 def main(indir, outdir, extra_func=False):
+    """Performs processing on multiple text files in a directory `indir`. Uses multiprocessing to parallelize the processing and saves the results to output files in `outdir`."""
     paths = [os.path.join(instance[0], file)
              for instance in list(os.walk(indir))
              for file in instance[-1] if file.endswith(".txt")]
