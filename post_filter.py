@@ -237,6 +237,7 @@ def seq_clean(seq, data_type="none"):
     
     Returns:
         str: Processed sequence.
+
     """
     if data_type == "zhihu":
         # Create pattern `pat` to match occurences of ellipsis ("...") followed by optional whitespace and phrase "show all" in Chinese
@@ -265,17 +266,36 @@ def seq_clean(seq, data_type="none"):
 
 
 def single_func(path, outpath, extra_func=False, min_length=5, max_length=200):
+    """
+    Process input file to generate output file that contains dialog data.
+
+    Args:
+        path (str): Path to the input file.
+        outpath (str): Path to the output file.
+        extra_func (bool): Determines whether additional cleaning operations should be applied based on the `data_type`. Default is `False`.
+        min_length (int): Specifies the minimum length of a sequence to be considered. Default is 5.
+        max_length (int): Specifies the maximum length of a sequence to be considered. Default is 200.
+
+    """
     try:
+        # Initialize empty list `new_data` to store the processed data
         new_data = []
         print("loading", path)
         print("outpath", outpath)
+        # Load the input data from path, which is list of strings, each string correspond to one line from the original file
         # data = load_jsonl(path)
         data = load_txt(path)
+        # Each string is split by the tab characters and stored as nested list in the `data`
         data = [x.split("\t\t") for x in data]
+        # Each list in `data` is treated as `dialog` and iterated using `tqdm.tqdm` to display progress bar
         for dialog in tqdm.tqdm(data):
+            # Initialize to store processed sequence for each dialog
             new_dialog = []
+            # Each list in `dialog` is treated as `seq`
             for seq in dialog:
+                # Leading and trailing spaces are removed
                 seq = seq.replace(" ", "")
+                # Perform cleaning if specified
                 if extra_func:
                     if "zhihu" in path:
                         data_type = "zhihu"
@@ -286,7 +306,9 @@ def single_func(path, outpath, extra_func=False, min_length=5, max_length=200):
                     seq = seq_clean(seq, data_type)
 
                 length = len(seq)
+                # If length of `seq` is more than max_length, less than 1, or contains "http", considered inalid
                 if length > max_length or length < 1 or "http" in seq:
+                    # Add `new_dialog` to `new_data` if there is valid element in it, then reset the `new_dialog`
                     if len(new_dialog) > 1:  # or length < min_length
                         # flag = len(new_dialog) == 2 and len(new_dialog[1].replace(" ", "")) < min_length
                         # if not flag:
@@ -294,11 +316,13 @@ def single_func(path, outpath, extra_func=False, min_length=5, max_length=200):
                     new_dialog = []
                 else:
                     new_dialog.append(seq)
+            # If `new_dialog` has at least 2 sequences, add to `new_data`
             if len(new_dialog) > 1:
                 # flag = len(new_dialog) == 2 and len(new_dialog[1].replace(" ", "")) < min_length
                 # if not flag:
                 new_data.append(new_dialog)
         # save_jsonl(new_data, outpath)
+        # Construct `new_data` list by joining the sequences within each dialog using the tab separator
         new_data = ["\t\t".join(x[:j + 1]) for x in new_data for j in range(1, len(x)) if len(x[j]) >= min_length]
         save_txt("\n".join(new_data), outpath)
         print("over", path)
